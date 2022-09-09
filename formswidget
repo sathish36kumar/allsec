@@ -1,0 +1,377 @@
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        .main {
+            /* display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px;
+      position: relative; */
+            /*width: 218px;*/
+        }
+
+        label {
+            font-family: "Arial";
+            font-weight: normal;
+            font-size: 12px;
+            color: #0f3661;
+        }
+
+        #add {
+            font-family: "Arial";
+            font-weight: normal;
+            font-size: 14px;
+            color: #0f3661;
+        }
+
+        #employeeCode_head,
+        #dateOfJoining_head,
+        #policyCommencementDate_head,
+        #sumAssured_head,
+        #installmentFrequency_head,
+        #numOfInstallmentPaid_head,
+        #numOfInstallmentPayable_head,
+        #amtPaidInCurrentFY_head,
+        #amtPayableInCurrentFY_head,
+        #relationshipWithPolicyHolder_head {
+            font-family: "Arial";
+            font-weight: normal;
+            font-size: 13px;
+            color: #0f3661;
+        }
+
+        #employeeCode_error,
+        #dateOfJoining_error,
+        #policyCommencementDate_error,
+        #sumAssured_error,
+        #installmentFrequency_error,
+        #numOfInstallmentPaid_error,
+        #numOfInstallmentPayable_error,
+        #amtPaidInCurrentFY_error,
+        #amtPayableInCurrentFY_error,
+        #relationshipWithPolicyHolder_error {
+            font-family: "Arial";
+            font-weight: normal;
+            font-size: 13px;
+            color: #ff0000;
+        }
+
+        #head {
+            font-family: "Arial";
+            font-weight: normal;
+            font-size: 12px;
+            color: #0f3661;
+        }
+
+        ::placeholder {
+            color: #DEDEDF;
+        }
+
+        ::-ms-input-placeholder {
+            color: #DEDEDF;
+        }
+
+        ::-moz-input-placeholder {
+            color: #DEDEDF;
+        }
+
+        ::-webkit-input-placeholder {
+            color: #DEDEDF;
+        }
+
+        #employeeCode,
+        #dateOfJoining,
+        #policyCommencementDate,
+        #sumAssured,
+        #installmentFrequency,
+        #numOfInstallmentPaid,
+        #numOfInstallmentPayable,
+        #amtPaidInCurrentFY,
+        #amtPayableInCurrentFY,
+        #relationshipWithPolicyHolder {
+            /*font-size: 1rem;*/
+            font-weight: 400;
+            line-height: 1.5;
+            /*height: 36px;*/
+            width: 100%;
+            border: 1px solid #DEDEDF;
+            padding: .375rem .75rem;
+            border-left: 2px solid #333333;
+            /*for red color border line*/
+        }
+
+        input[type=submit] {
+            color: #fff;
+            padding: .375rem .75rem;
+            width: 45%;
+            border: 0px;
+            background-color: #00893E;
+            height: 38px;
+
+        }
+
+        input[type=reset] {
+            color: #0f3661;
+            padding: .375rem .75rem;
+            width: 45%;
+            border: 0px;
+            background-color: #fff;
+            height: 38px;
+
+        }
+
+    </style>
+    <script type="text/javascript">
+        var language_
+        $(document).ready(function() {
+            document.getElementById('employeeCode').placeholder = "Employee code";
+            document.getElementById('dateOfJoining').placeholder = "Date of joining";
+            document.getElementById('policyCommencementDate').placeholder = "Policy commencement date";
+            document.getElementById('sumAssured').placeholder = "Assured sum";
+
+            document.getElementById('installmentFrequency').placeholder = "Frequency";
+            document.getElementById('numOfInstallmentPaid').placeholder = "Installments paid in current FY";
+            document.getElementById('numOfInstallmentPayable').placeholder = "Installments due in current FY";
+            document.getElementById('amtPaidInCurrentFY').placeholder = "Amount paid in current FY";
+            document.getElementById('amtPayableInCurrentFY').placeholder = "Amount payable in current FY";
+            document.getElementById('relationshipWithPolicyHolder').placeholder = "Relationship with policy holder";
+
+            document.getElementById('head').innerHTML = 'All fields marked with * are mandatory';
+            document.getElementById('employeeCode_head').innerHTML = 'Employee code *';
+            document.getElementById('dateOfJoining_head').innerHTML = 'Date of joining *';
+            document.getElementById('policyCommencementDate_head').innerHTML = 'Policy commencement date *';
+            document.getElementById('sumAssured_head').innerHTML = 'Assured sum *';
+            document.getElementById('installmentFrequency_head').innerHTML = "Frequency";
+            document.getElementById('numOfInstallmentPaid_head').innerHTML = "Installments(#) paid in current FY";
+            document.getElementById('numOfInstallmentPayable_head').innerHTML = "Installments(#) due in current FY";
+            document.getElementById('amtPaidInCurrentFY_head').innerHTML = "Amount paid in current FY";
+            document.getElementById('amtPayableInCurrentFY_head').innerHTML = "Amount payable in current FY";
+            document.getElementById('relationshipWithPolicyHolder_head').innerHTML = "Relationship with policy holder";
+        })
+
+        $(function() {
+            $("#submit").click(function() {
+                console.log("--CLICKED ON SUBMIT---")
+                var a = false, b = false, c = false, d = false, e = false;
+                var f = false, g = false, h = false, i = false, j = false;
+                console.log([a,b,c,d,e,f,g,h,i,j])
+                <!-- Validation:: Employee Code-->
+                document.getElementById('employeeCode_error').style.display = 'inline';
+                var empCode = $("#employeeCode").val().trim()
+                if (empCode == "") {
+                    document.getElementById('employeeCode_error').innerHTML = "Please enter the employee code";
+                    return false;
+                } else {
+                    var re = /^[0-9]+$/;
+                    if (!re.test(empCode)) {
+                        document.getElementById('employeeCode_error').innerHTML = "Please enter a valid employee code";
+                        return false;
+                    } else {
+                        a = true;
+                        document.getElementById('employeeCode_error').innerHTML = "";
+                    }
+                }
+
+                <!-- Validation:: Date of Joining -->
+                <!--dateOfJoining-->
+                document.getElementById('dateOfJoining_error').style.display = 'inline';
+                var doj = $("#dateOfJoining").val().trim()
+                if (doj == "" || doj == null) {
+                    document.getElementById('dateOfJoining_error').innerHTML = "Please select a date";
+                    return false;
+                } else {
+                    b = true;
+                    document.getElementById('dateOfJoining_error').innerHTML = "";
+                }
+
+                <!-- Validation:: Policy Commencement Date -->
+                <!--policyCommencementDate-->
+                document.getElementById('policyCommencementDate_error').style.display = 'inline';
+                var pcDate = $("#policyCommencementDate").val().trim()
+                if (pcDate == "" || doj == null) {
+                    document.getElementById('policyCommencementDate_error').innerHTML = "Please select a date";
+                    return false;
+                } else {
+                    c = true;
+                    document.getElementById('policyCommencementDate_error').innerHTML = "";
+                }
+
+                <!-- Validation:: Assured Sum -->
+                document.getElementById('sumAssured_error').style.display = 'inline';
+                var sumAssured = $("#sumAssured").val()
+                if (sumAssured == "") {
+                    document.getElementById('sumAssured_error').innerHTML = "Please enter the assured sum";
+                    return false;
+                } else {
+                    var re = /^[0-9]+$/;
+                    if (!re.test(sumAssured)) {
+                        document.getElementById('sumAssured_error').innerHTML = "Please enter numeric value only";
+                        return false;
+                    } else {
+                        d = true;
+                        document.getElementById('sumAssured_error').innerHTML = "";
+                    }
+                }
+
+                <!-- Validation:: Frequency -->
+                document.getElementById('installmentFrequency_error').style.display = 'inline';
+                var frequency = $("#installmentFrequency").val()
+                console.log(frequency)
+                if (frequency == "" || frequency == null) {
+                    document.getElementById('installmentFrequency_error').innerHTML = "Please select a value from dropdown";
+                    return false;
+                } else {
+                    e = true;
+                    document.getElementById('installmentFrequency_error').innerHTML = "";
+                }
+
+                var maxInstallmentCount = 12;
+                switch (frequency) {
+                    case "Monthly":
+                        maxInstallmentCount = 12;
+                        break;
+                    case "Quarterly":
+                        maxInstallmentCount = 4;
+                        break;
+                    case "Half Yearly":
+                        maxInstallmentCount = 2;
+                        break;
+                    case "Yearly":
+                        maxInstallmentCount = 1;
+                        break;
+                    case "One Time":
+                        break;
+                }
+
+                <!-- Validation:: Num of installment paid -->
+                document.getElementById('numOfInstallmentPaid_error').style.display = 'inline';
+                var paidInstCount = $("#numOfInstallmentPaid").val()
+                if (paidInstCount == "") {
+                    document.getElementById('numOfInstallmentPaid_error').innerHTML = "Please enter the installment count";
+                    return false;
+                } else {
+                    var re = /^[0-9]+$/;
+                    if (!re.test(paidInstCount)) {
+                        document.getElementById('numOfInstallmentPaid_error').innerHTML = "Please enter a valid number";
+                        return false;
+                    } else {
+                        if (paidInstCount > maxInstallmentCount) {
+                            document.getElementById('numOfInstallmentPaid_error').innerHTML = "Value can not be greater than " + maxInstallmentCount;
+                        } else {
+                            f = true;
+                            document.getElementById('numOfInstallmentPaid_error').innerHTML = "";
+                        }
+                    }
+                }
+
+                <!-- Validation:: Num of installment payable -->
+                document.getElementById('numOfInstallmentPayable_error').style.display = 'inline';
+                var payableInstCount = $("#numOfInstallmentPayable").val()
+                if (payableInstCount == "") {
+                    document.getElementById('numOfInstallmentPayable_error').innerHTML = "Please enter the installment count";
+                    return false;
+                } else {
+                    var re = /^[0-9]+$/;
+                    if (!re.test(payableInstCount)) {
+                        document.getElementById('numOfInstallmentPayable_error').innerHTML = "Please enter a valid number";
+                        return false;
+                    } else {
+                        console.log("paidInstCount - ", paidInstCount)
+                        console.log("payableInstCount - ", payableInstCount)
+                        console.log("Sum -", (paidInstCount+payableInstCount))
+                        if (payableInstCount > maxInstallmentCount) {
+                            document.getElementById('numOfInstallmentPayable_error').innerHTML = "Value can not be greater than " + maxInstallmentCount;
+                        } else {
+                            if ((parseInt(payableInstCount) + parseInt(paidInstCount)) > maxInstallmentCount) {
+                                document.getElementById('numOfInstallmentPayable_error').innerHTML = "paid+due installment count can not be greater than " + maxInstallmentCount;
+                            } else {
+                                if ((parseInt(payableInstCount) + parseInt(paidInstCount)) < maxInstallmentCount) {
+                                    document.getElementById('numOfInstallmentPayable_error').innerHTML = "paid+due installment count can not be lesser than " + maxInstallmentCount;
+                                } else {
+                                    g = true;
+                                    document.getElementById('numOfInstallmentPayable_error').innerHTML = "";
+                                }
+                            }
+                        }
+                    }
+                }
+
+                <!-- Validation:: Amount paid in current FY -->
+                document.getElementById('amtPaidInCurrentFY_error').style.display = 'inline';
+                var amtPaid = $("#amtPaidInCurrentFY").val()
+                if (amtPaid == "") {
+                    document.getElementById('amtPaidInCurrentFY_error').innerHTML = "Please enter the amount";
+                    return false;
+                } else {
+                    var re = /^[0-9]+$/;
+                    if (!re.test(amtPaid)) {
+                        document.getElementById('amtPaidInCurrentFY_error').innerHTML = "Please enter a valid number";
+                        return false;
+                    } else {
+                        h = true;
+                        document.getElementById('amtPaidInCurrentFY_error').innerHTML = "";
+                    }
+                }
+
+                <!-- Validation:: Amount payable in current FY -->
+                document.getElementById('amtPayableInCurrentFY_error').style.display = 'inline';
+                var amtPayable = $("#amtPayableInCurrentFY").val()
+                if (amtPayable == "") {
+                    document.getElementById('amtPayableInCurrentFY_error').innerHTML = "Please enter the amount";
+                    return false;
+                } else {
+                    var re = /^[0-9]+$/;
+                    if (!re.test(amtPayable)) {
+                        document.getElementById('amtPayableInCurrentFY_error').innerHTML = "Please enter a valid number";
+                        return false;
+                    } else {
+                        i = true;
+                        document.getElementById('amtPayableInCurrentFY_error').innerHTML = "";
+                    }
+                }
+
+                <!-- Validation:: Relationship -->
+                document.getElementById('relationshipWithPolicyHolder_error').style.display = 'inline';
+                var relationship = $("#relationshipWithPolicyHolder").val()
+                console.log(relationship)
+                if (relationship == "" || relationship == null) {
+                    document.getElementById('relationshipWithPolicyHolder_error').innerHTML = "Please select a value from dropdown";
+                    return false;
+                } else {
+                    j = true;
+                    document.getElementById('relationshipWithPolicyHolder_error').innerHTML = "";
+                }
+
+                arr = [a,b,c,d,e,f,g,h,i,j]
+                console.log(arr);
+                if (arr.every(e => e === true)) {
+
+                    // clearTimeout(x)
+                    console.log('All fields filled')
+                    console.log('employeeCode -', $("#employeeCode").val())
+                    console.log('dateOfJoining -', $("#dateOfJoining").val())
+                    console.log('policyCommencementDate -', $("#policyCommencementDate").val())
+                    console.log('sumAssured -', $("#sumAssured").val())
+                    console.log('installmentFrequency -', $("#installmentFrequency").val())
+                    console.log('numOfInstallmentPaid -', $("#numOfInstallmentPaid").val())
+                    console.log('numOfInstallmentPayable -', $("#numOfInstallmentPayable").val())
+
+                    console.log('amtPaidInCurrentFY -', $("#amtPaidInCurrentFY").val())
+                    console.log('amtPayableInCurrentFY -', $("#amtPayableInCurrentFY").val())
+                    console.log('relationshipWithPolicyHolder -', $("#relationshipWithPolicyHolder").val())
+
+                    let queryback = new URLSearchParams(window.location.search).get('query')
+                    window.parent.postMessage(JSON.stringify({
+                        event_code: 'ym-client-event',
+                        data: JSON.stringify({
+                            event: {
+                                code: "lifeInsuranceDetails",
+                                data: {
+                                    employeeCode: $("#employeeCode").val(),
+                                    dateOfJoining: $("#dateOfJoining").val(),
